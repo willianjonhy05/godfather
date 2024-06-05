@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home
+from .views import home, contato
+from contato.views import inscricao_newsletter
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('inscricao/', inscricao_newsletter, name='inscricao'),
+    path('contato/', contato, name='contato'),
     path('', home, name='home'),
 ]
 
