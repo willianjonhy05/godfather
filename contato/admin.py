@@ -5,7 +5,7 @@ from .models import Contato
 
 @admin.register(Contato)
 class ContatoAdmin(admin.ModelAdmin):
-    list_display = ["id", "nome", "email", "telefone", "assunto" "data", "lida"]
+    list_display = ["id", "nome", "email", "telefone", "assunto", "data", "lida"]
     search_fields = ["nome", "email", "telefone"]
     list_display_links = [ "nome", "id"]
     list_per_page = 10

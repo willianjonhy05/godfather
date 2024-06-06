@@ -64,7 +64,7 @@ class Usuario(models.Model):
     nome = models.CharField("Nome Completo", max_length=100)
     sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
     cpf = models.CharField("CPF", max_length=14, unique=True)
-    rg = models.CharField("RG", max_length=20, unique=True)
+    rg = models.CharField("RG", max_length=20, unique=True, null=True, blank=True)
     orgao_expedidor = models.CharField("Órgão Expedidor", max_length=20, choices=ORGAOS_EXPEDIDORES, null=True, blank=True)
     cep = models.CharField("CEP", max_length=8, null=True, blank=True)
     uf = models.CharField("Estado", max_length=2, choices=ESTADO, null=True, blank=True)
