@@ -20,10 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import home, contato
 from contato.views import inscricao_newsletter
+from core.views import create_user_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inscricao/', inscricao_newsletter, name='inscricao'),
+    path('create-profile/', create_user_profile, name='create_profile'),
     path('contato/', contato, name='contato'),
     path('', home, name='home'),
 ]
