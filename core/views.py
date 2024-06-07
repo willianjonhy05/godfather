@@ -11,7 +11,7 @@ from django.views.generic import CreateView
     
 class UsuarioCreateView(CreateView):
     form_class = UsuarioForms
-    template_name = 'public/criar_usuario.html'
+    template_name = 'public/sign-up.html'
     success_url = reverse_lazy('home')
 
     def get_success_url(self):
