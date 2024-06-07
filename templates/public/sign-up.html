@@ -68,6 +68,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="input-group">
+                            <div class="input-group">                                
+                                <label class="radio-container m-r-45">
+                                    {{ form.concorda_termos.label }}
+                                    {{ form.concorda_termos }}
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <!-- <span>Clique aqui e consulte nossa Política de Privacidade e Termos de Uso</span> -->
+                        </div>
                         <div class="p-t-15">
                             <button class="btn btn--radius-2 btn--blue" type="submit">Enviar</button>
                         </div>
@@ -77,6 +87,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            if (!document.getElementById('id_concorda_termos').checked) {
+                event.preventDefault();
+                alert('Você deve concordar com os termos para enviar o formulário.');
+            }
+        });
+    });
+</script>
 
     <script src="{% static 'js/sign_up/jquery.min.js' %}"></script>
     <script src="{% static 'js/sign_up/select2.min.js' %}"></script>

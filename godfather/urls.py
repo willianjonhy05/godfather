@@ -18,14 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home, contato
+from .views import home, contato, politica
 from contato.views import inscricao_newsletter
-from core.views import UsuarioCreateView
+from core.views import UsuarioCreateView, criar_usuario
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inscricao/', inscricao_newsletter, name='inscricao'),
-    path('criar-usuario/', UsuarioCreateView.as_view(), name='registrar_usuario'),
+    path('politica/', politica, name='politica'),
+    path('criar-usuario/', criar_usuario, name='registrar_usuario'),
     path('contato/', contato, name='contato'),
     path('', home, name='home'),
 ]

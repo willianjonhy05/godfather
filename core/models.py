@@ -20,6 +20,7 @@ class Perfil(AbstractUser):
     email = models.EmailField(unique=True)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
+    concorda_termos = models.BooleanField(default=False)
 
 
     USERNAME_FIELD = "email"
