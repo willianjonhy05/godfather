@@ -20,8 +20,7 @@ class Perfil(AbstractUser):
     email = models.EmailField(unique=True)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
-    sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
-    data_nascimento = models.DateField('Data de Nascimento')
+
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
@@ -44,22 +43,15 @@ class Perfil(AbstractUser):
         
         return username
     
-    def validate_cpf(self):
-        self.cpf = re.sub(r'\D', '', self.cpf)
-        cpf = CPF()
-        if not cpf.validate(self.cpf):
-            raise ValidationError(f'CPF inválido!')
-    
     def save(self, *args, **kwargs):
         if not self.username:
             self.username = self.gerar_username()
-        self.validate_cpf()
         super().save(*args, **kwargs)
 
     
     class Meta:
-        verbose_name = "Perfil"
-        verbose_name_plural = "Perfis"  
+        verbose_name = "Perfil de Login"
+        verbose_name_plural = "Perfis de Login"  
 
 
 class Areas(models.Model):
@@ -116,7 +108,7 @@ class Usuario(models.Model):
     avatar = models.ImageField("Foto", upload_to='avatar/%Y/%m/%d/', blank=True, null=True)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
-    sexo = models.CharField("Sexo", max_length=1, choices=SEXO)
+    sexo = models.CharField("Sexo", max_length=1, choices=SEXO, null=True, blank=True)
     cpf = models.CharField("CPF", max_length=14, unique=True, null=True, blank=True)
     rg = models.CharField("RG", max_length=20, unique=True, null=True, blank=True)
     orgao_expedidor = models.CharField("Órgão Expedidor", max_length=20, choices=ORGAOS_EXPEDIDORES, null=True, blank=True)
@@ -127,7 +119,7 @@ class Usuario(models.Model):
     bairro = models.CharField("Bairro", max_length=25, null=True, blank=True)
     numero = models.CharField("Número", max_length=25, null=True, blank=True)
     nacionalidade = models.CharField("Nacionalidade", max_length=20, default="Brasileira")
-    data_nascimento = models.DateField('Data de Nascimento')
+    data_nascimento = models.DateField('Data de Nascimento', null=True, blank=True)
     email = models.EmailField("Email") 
     data_de_inscricao = models.DateTimeField(default=timezone.now)
     
@@ -138,21 +130,22 @@ class Usuario(models.Model):
         return round(diferenca.days // 365.25) 
 
     def __str__(self):
-        return self.nome
+        return self.usuario.nome
     
     def validate_cpf(self):
-        self.cpf = re.sub(r'\D', '', self.cpf)
-        cpf = CPF()
-        if not cpf.validate(self.cpf):
-            raise ValidationError(f'CPF inválido!')
+        if self.cpf:
+            self.cpf = re.sub(r'\D', '', self.cpf)
+            cpf = CPF()
+            if not cpf.validate(self.cpf):
+                raise ValidationError(f'CPF inválido!')
 
     def save(self, *args, **kwargs):
         self.validate_cpf()
         super().save(*args, **kwargs)
         
     class Meta:
-        verbose_name = "Usuário"
-        verbose_name_plural = "Usuários"  
+        verbose_name = "Candidato"
+        verbose_name_plural = "Candidatos"  
         
         
 class Empresa(models.Model):
