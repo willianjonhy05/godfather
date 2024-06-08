@@ -28,3 +28,4 @@ def politica(request):
     template_name = 'public/politica.html'
     context = {}
     return render(request, template_name, context)
+

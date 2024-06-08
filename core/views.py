@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.contrib.auth import login
-from .models import Perfil
-from django.contrib.auth.forms import UserCreationForm
-from .models import Usuario
 from .forms import UsuarioForms
 from django.views.generic import CreateView
 from django.contrib import messages
+from .utils import is_superuser
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Usuario, Ideia, Proposta
 
 
     
@@ -39,3 +38,18 @@ def criar_usuario(request):
         form = UsuarioForms()
     
     return render(request, 'public/sign-up.html', {'form': form})
+
+
+# @login_required
+# @user_passes_test(is_superuser)
+def dashboard(request):
+    template_name = 'admin/dashboard.html'
+    qtde_usuarios = Usuario.objects.count()
+    qtde_ideias = Ideia.objects.count()
+    qtde_propostas = Proposta.objects.count()
+    context = {
+        'qtde_usuarios': qtde_usuarios,
+        'qtde_ideias': qtde_ideias,
+        'qtde_propostas': qtde_propostas,
+    }
+    return render(request, template_name, context)
