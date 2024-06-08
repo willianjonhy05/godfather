@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>{% block titulo %}Dashboard GodFather{% endblock titulo %}</title>
+    <title>{% block titulo %}GodFather{% endblock titulo %}</title>
     <meta name="description" content="Plataforma que conecta ideias inovadoras com empreendedores sonhando voar" />
     <meta name="author" content="GodFather" />
     <meta name="keyword" content="empresa, investimentos, negócios, sonhos" />
@@ -63,7 +63,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="{% url 'dashboard' %}" class="logo d-flex align-items-center">
+            <a href="{% url 'feed_user' %}" class="logo d-flex align-items-center">
                 <img src="{% static 'assets/logo/logo.png' %}" alt="Logomarca da Empresa GodFather">
                 <span class="d-none d-lg-block">GodFather</span>
             </a>
@@ -305,29 +305,19 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-menu-button-wide"></i><span>Cadastro</span><i
+                    <i class="bi bi-menu-button-wide"></i><span>Criar</span><i
                         class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
                     <li>
-                        <a href="{% url 'nova_area' %}">
-                            <i class="bi bi-circle"></i><span>Área de Interesse</span>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>Ideia</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="bi bi-circle"></i><span>Usuarios</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="bi bi-circle"></i><span>Spinners</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="bi bi-circle"></i><span>Tooltips</span>
+                            <i class="bi bi-circle"></i><span>Crowdfunding</span>
                         </a>
                     </li>
                 </ul>
@@ -409,9 +399,21 @@
                 </ul>
             </li><!-- End Charts Nav -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'contatos' %}">
+                <a class="nav-link collapsed" href="{% url 'minhas_ideias' %}">
+                    <i class="bi bi-lightbulb"></i>
+                    <span>Minhas Ideias</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'minhas_propostas' %}">
+                    <i class="bi bi-clipboard2-data"></i>
+                    <span>Minhas Propostas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{% url 'contato' %}">
                     <i class="bi bi-envelope"></i>
-                    <span>Contatos</span>
+                    <span>Contato</span>
                 </a>
             </li>
 
@@ -421,46 +423,18 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#">
                     <i class="bi bi-person"></i>
-                    <span>Profile</span>
+                    <span>Meu Perfil</span>
                 </a>
-            </li><!-- End Profile Page Nav -->
+            </li>
+
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
-                    <i class="bi bi-question-circle"></i>
-                    <span>F.A.Q</span>
-                </a>
-            </li><!-- End F.A.Q Page Nav -->
-
-            <!-- End Contact Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
-                    <i class="bi bi-card-list"></i>
-                    <span>Register</span>
-                </a>
-            </li><!-- End Register Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{% url 'sair' %}">
                     <i class="bi bi-box-arrow-in-right"></i>
-                    <span>Login</span>
+                    <span>Sair</span>
                 </a>
             </li><!-- End Login Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
-                    <i class="bi bi-dash-circle"></i>
-                    <span>Error 404</span>
-                </a>
-            </li><!-- End Error 404 Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>Blank</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
 
         </ul>
 

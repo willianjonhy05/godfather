@@ -75,6 +75,11 @@ class Areas(models.Model):
         if not self.pk and not self.codigo:
             self.codigo = self.gerar_codigo()
         super().save(*args, **kwargs)
+        
+        
+    class Meta:
+        verbose_name = "Segmento"
+        verbose_name_plural = "Segmentos"  
 
 class Usuario(models.Model):
     SEXO = (
@@ -105,10 +110,12 @@ class Usuario(models.Model):
         ('IPC', 'Instituto de Polícia Científica'),
     ]
         
-    usuario = models.OneToOneField(Perfil, verbose_name='Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='funcionario')
+    usuario = models.OneToOneField(Perfil, verbose_name='Usuario', on_delete=models.CASCADE, blank=True, null=True, related_name='usuario')
     avatar = models.ImageField("Foto", upload_to='avatar/%Y/%m/%d/', blank=True, null=True)
     telefone = models.CharField("Telefone", max_length=11)
     nome = models.CharField("Nome Completo", max_length=100)
+    descricao = models.TextField("Sobre mim", max_length=500, null=True, blank=True)
+    profissao = models.CharField("Profissão", max_length=60, null=True, blank=True)
     sexo = models.CharField("Sexo", max_length=1, choices=SEXO, null=True, blank=True)
     cpf = models.CharField("CPF", max_length=14, unique=True, null=True, blank=True)
     rg = models.CharField("RG", max_length=20, unique=True, null=True, blank=True)
@@ -123,6 +130,11 @@ class Usuario(models.Model):
     data_nascimento = models.DateField('Data de Nascimento', null=True, blank=True)
     email = models.EmailField("Email") 
     data_de_inscricao = models.DateTimeField(default=timezone.now)
+    ativo = models.BooleanField("Status do Usuário", default=True)
+    perfil_instagram = models.URLField("Link do Perfil no Instagram", blank=True, null=True)
+    perfil_twitterx = models.URLField("Link do Perfil no Twitter/X", blank=True, null=True)
+    perfil_facebook = models.URLField("Link do Perfil no Facebook", blank=True, null=True)
+    perfil_linkedin = models.URLField("Link do Perfil no LinkedIn", blank=True, null=True)
     
     @property
     def idade(self):
@@ -217,6 +229,7 @@ class Ideia(models.Model):
     titulo = models.CharField("Título da Ideia", max_length=100)
     area = models.ForeignKey(Areas, on_delete=models.CASCADE, related_name='area')
     descricao = models.TextField("Descrição da Ideia")
+    foto = models.ImageField("Foto", upload_to='ideias/%Y/%m/%d/', blank=True, null=True)
     autor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='ideia')
     data_criacao = models.DateTimeField("Data de Criação", auto_now_add=True)
     data_atualizacao = models.DateTimeField("Data de Atualização", auto_now=True)

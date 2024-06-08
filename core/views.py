@@ -6,7 +6,8 @@ from django.contrib import messages
 from .utils import is_superuser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Usuario, Ideia, Proposta, Areas
-from .forms import AreasForm
+from .forms import AreasForm, UsuarioFormCompletoAdmin
+from contato.models import Contato
 
 
     
@@ -34,7 +35,7 @@ def criar_usuario(request):
             usuario.concorda_termos = True
             usuario.save()
             messages.success(request, "Usuário criado com sucesso, faça seu Login!")
-            return redirect('login')
+            return redirect('login_usuario')
     else:
         form = UsuarioForms()
     
@@ -86,19 +87,20 @@ def listar_areas(request):
 
 # @login_required
 # @user_passes_test(is_superuser)    
-def atualizar_area(request):
-    area = get_object_or_404(Areas, id=id)   
+def atualizar_area(request, id):
+    area = get_object_or_404(Areas, id=id)
     template_name = 'admin/nova-area.html'
+    
     if request.method == "POST":
         form = AreasForm(request.POST, instance=area)
         if form.is_valid():
             form.save()
             messages.success(request, 'Área atualizada com sucesso!')
-            return redirect('listar-empresas')
+            return redirect('listar_areas')
     else:
         form = AreasForm(instance=area)
     
-    return render(request, template_name, {'form': form})
+    return render(request, template_name, {'form': form, 'area': area})
 
 # @login_required
 # @user_passes_test(is_superuser)      
@@ -114,3 +116,41 @@ def deletar_area(request, id):
 def detalhar_area(request, id):
     area = get_object_or_404(Areas, id=id)
     return render(request, 'admin/detalhar_area.html', {'area': area})
+
+# @login_required
+# @user_passes_test(is_superuser)     
+def contatos(request):
+    template_name = 'admin/contatos.html'
+    contatos = Contato.objects.all() 
+    context = {
+        'contatos': contatos,
+    }
+    return render(request, template_name, context)
+
+
+# @login_required
+# @user_passes_test(is_superuser)     
+def lista_de_usuarios(request):
+    template_name = 'admin/usuarios.html'
+    usuarios = Usuario.objects.all() 
+    context = {
+        'usuarios': usuarios,
+    }
+    return render(request, template_name, context)
+
+# @login_required
+# @user_passes_test(is_superuser)    
+def atualizar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+    template_name = 'admin/usuario_form.html'
+    
+    if request.method == "POST":
+        form = UsuarioFormCompletoAdmin(request.POST, request.FILES, instance=usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário atualizado com sucesso!')
+            return redirect('lista_usuarios')
+    else:
+        form = UsuarioFormCompletoAdmin(instance=usuario)
+    
+    return render(request, template_name, {'form': form, 'usuario': usuario})    

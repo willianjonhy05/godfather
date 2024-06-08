@@ -1,7 +1,7 @@
 from .models import Areas
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Perfil
+from .models import Perfil, Usuario
 from django.forms import ModelForm, EmailField, CharField, DateField
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -33,3 +33,9 @@ class AreasForm(forms.ModelForm):
     class Meta:
         model = Areas
         fields = ['nome', 'observacoes']
+        
+        
+class UsuarioFormCompletoAdmin(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = '__all__' 
