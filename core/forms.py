@@ -1,4 +1,4 @@
-from .models import Usuario
+from .models import Areas
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Perfil
@@ -27,4 +27,9 @@ class UsuarioForms(forms.ModelForm):
 
         return cleaned_data
         
-        
+    
+class AreasForm(forms.ModelForm):
+                           
+    class Meta:
+        model = Areas
+        fields = ['nome', 'observacoes']

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard GodFather</title>
+    <title>{% block titulo %}Dashboard GodFather{% endblock titulo %}</title>
     <meta name="description" content="Plataforma que conecta ideias inovadoras com empreendedores sonhando voar" />
     <meta name="author" content="GodFather" />
     <meta name="keyword" content="empresa, investimentos, negócios, sonhos" />
@@ -43,6 +43,10 @@
     <!-- Template Main CSS File -->
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
     <link href="{% static 'css/dashboard/style_dois.css' %}" rel="stylesheet" media="all">
+    {% block css %}
+
+
+    {% endblock css %}
 
     <!-- =======================================================
   * Template Name: NiceAdmin
@@ -59,7 +63,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="#" class="logo d-flex align-items-center">
+            <a href="{% url 'dashboard' %}" class="logo d-flex align-items-center">
                 <img src="{% static 'assets/logo/logo.png' %}" alt="Logomarca da Empresa GodFather">
                 <span class="d-none d-lg-block">GodFather</span>
             </a>
@@ -307,8 +311,8 @@
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
                     <li>
-                        <a href="#">
-                            <i class="bi bi-circle"></i><span>Pagination</span>
+                        <a href="{% url 'nova_area' %}">
+                            <i class="bi bi-circle"></i><span>Área de Interesse</span>
                         </a>
                     </li>
                     <li>
@@ -336,8 +340,8 @@
                 </a>
                 <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="#">
-                            <i class="bi bi-circle"></i><span>Form Elements</span>
+                        <a href="{% url 'listar_areas' %}">
+                            <i class="bi bi-circle"></i><span>Segmentos de Ideias</span>
                         </a>
                     </li>
                     <li>

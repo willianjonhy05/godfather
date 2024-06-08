@@ -1,0 +1,51 @@
+{% extends 'admin/dashboard.html' %}
+{% load widget_tweaks static bootstrap5 %}
+
+
+{% block titulo %}
+Listar Areas | {{ block.super }}
+{% endblock titulo %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+
+{% block main %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Todos os Segmentos</h5>
+        <!-- <p>Add <code>.table-bordered</code> for borders on all sides of the table and cells.</p> -->
+        <!-- Bordered Table -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Nome da Área</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col" colspan='2'>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for area in areas %}
+                <tr>
+                    <th scope="row">{{ area.codigo }}</th>
+                    <td>{{ area.nome }}</td>
+                    <td>{{ area.observacoes }}</td>
+                    <td><a href="#"><button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button></a>
+                    </td>
+                    <td><a href="#"><button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button></td></a>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+
+{% endblock main %}
