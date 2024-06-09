@@ -135,6 +135,15 @@ class Usuario(models.Model):
     perfil_twitterx = models.URLField("Link do Perfil no Twitter/X", blank=True, null=True)
     perfil_facebook = models.URLField("Link do Perfil no Facebook", blank=True, null=True)
     perfil_linkedin = models.URLField("Link do Perfil no LinkedIn", blank=True, null=True)
+
+    @property
+    def primeiro_nome(self):
+        return self.nome.split()[0] if self.nome else ''
+    
+    @property
+    def nome_composto(self):
+        nomes = self.nome.split()
+        return ' '.join(nomes[:2]) if len(nomes) >= 2 else ''
     
     @property
     def idade(self):

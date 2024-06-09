@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home, contato, politica, feed_usuario, login_usuario, sair, contato_usuario, minhas_ideias, minhas_propostas, meu_perfil
+from .views import home, contato, politica, feed_usuario, alterar_senha, login_usuario, sair, contato_usuario, minhas_ideias, minhas_propostas, meu_perfil
 from contato.views import inscricao_newsletter
 from core.views import UsuarioCreateView, criar_usuario
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('inscricao/', inscricao_newsletter, name='inscricao'),
     path('login/', login_usuario, name='login_usuario'),
+    path('alterar-senha/', alterar_senha, name='alterar-senha'),
     path('sair/', sair, name='sair'),
     path('politica/', politica, name='politica'),
     path('feed/', feed_usuario, name='feed_user'),

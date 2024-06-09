@@ -3,7 +3,7 @@
 
 
 {% block titulo %}
-Contato | {{ block.super }}
+Meu Perfil | {{ block.super }}
 {% endblock titulo %}
 
 {% block css %}
@@ -17,7 +17,7 @@ Contato | {{ block.super }}
 
 
 <div class="pagetitle">
-    <h1>Contato</h1>
+    <h1>Meu Perfil</h1>
 </div>
 
 <section class="section profile">
@@ -26,8 +26,11 @@ Contato | {{ block.super }}
 
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            {% if usuario.avatar %}
+            <img src="{{ usuario.avatar.url }}" alt="Profile" class="rounded-circle">
+            {% else %}
+            <img src="{% static 'assets/img/dashboard/usuario.png' %}" alt="Profile" class="rounded-circle">
+            {% endif %}
             <h2>{{ usuario.nome }}</h2>
             <h3>{{ usuario.profissao }}</h3>
             <div class="social-links mt-2">
@@ -53,15 +56,19 @@ Contato | {{ block.super }}
               </li>
 
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Perfil</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Informações</button>
               </li>
 
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Configurações</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#editar-documentos">Editar Documentos</button>
               </li>
 
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Alterar Senha</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#editar-enderecos">Editar Endereços</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#editar-redes-sociais">Editar Redes Sociais</button>
               </li>
 
             </ul>
@@ -77,11 +84,6 @@ Contato | {{ block.super }}
                   <div class="col-lg-3 col-md-4 label ">Nome Completo</div>
                   <div class="col-lg-9 col-md-8">{{ usuario.nome }}</div>
                 </div>
-
-                <!-- <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Company</div>
-                  <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-                </div> -->
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Profissão</div>
@@ -113,185 +115,213 @@ Contato | {{ block.super }}
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form>
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
                   <div class="row mb-3">
-                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                    <label for="{{ formpessoal.avatar.id_for_label }}" class="col-md-4 col-lg-3 col-form-label formpessoal.label">{{ formpessoal.avatar.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <img src="assets/img/profile-img.jpg" alt="Profile">
-                      <div class="pt-2">
-                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                      </div>
+                      {% render_field formpessoal.avatar class="form-control" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                    <label for="{{ formpessoal.nome.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formpessoal.nome.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                      <!-- <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson"> -->
+                      {% render_field formpessoal.nome class="form-control" type="text" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                    <label for="{{ formpessoal.descricao.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formpessoal.descricao.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
+                      <!-- <textarea name="about" class="form-control" id="about" style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea> -->
+                      {% render_field formpessoal.descricao class="form-control" type="text" style="height: 100px" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
+                    <label for="{{ formpessoal.profissao.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formpessoal.profissao.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="company" type="text" class="form-control" id="company" value="Lueilwitz, Wisoky and Leuschke">
+                      <!-- <input name="company" type="text" class="form-control" id="company" value="Lueilwitz, Wisoky and Leuschke"> -->
+                      {% render_field formpessoal.profissao class="form-control" type="text" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
+                    <label for="{{ formpessoal.sexo.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formpessoal.sexo.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
+                      <!-- <input name="job" type="text" class="form-control" id="Job" value="Web Designer"> -->
+                      {% render_field formpessoal.sexo class="form-control" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                    <label for="{{ formpessoal.telefone.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formpessoal.telefone.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="country" type="text" class="form-control" id="Country" value="USA">
+                      <!-- <input name="country" type="text" class="form-control" id="Country" value="USA"> -->
+                      {% render_field formpessoal.telefone class="form-control" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                    <label for="{{ formpessoal.email.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formpessoal.email.label }}</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
+                      <!-- <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022"> -->
+                      {% render_field formpessoal.email class="form-control" type="email" %}
                     </div>
                   </div>
 
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
                   </div>
-                </form><!-- End Profile Edit Form -->
+                </form>
 
               </div>
 
-              <div class="tab-pane fade pt-3" id="profile-settings">
+              <div class="tab-pane fade pt-3" id="editar-documentos">
 
-                <!-- Settings Form -->
-                <form>
+  
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="row mb-3">
+                    <label for="{{ formdocs.cpf.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formdocs.cpf.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formdocs.cpf class="form-control" %}
+                    </div>
+                  </div>
 
                   <div class="row mb-3">
-                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                    <div class="col-md-8 col-lg-9">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                        <label class="form-check-label" for="changesMade">
-                          Changes made to your account
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                        <label class="form-check-label" for="newProducts">
-                          Information on new products and services
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="proOffers">
-                        <label class="form-check-label" for="proOffers">
-                          Marketing and promo offers
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                        <label class="form-check-label" for="securityNotify">
-                          Security alerts
-                        </label>
-                      </div>
+                    <label for="{{ formdocs.rg.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formdocs.rg.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formdocs.rg class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formdocs.orgao_expedidor.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formdocs.orgao_expedidor.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formdocs.orgao_expedidor class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formdocs.nacionalidade.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formdocs.nacionalidade.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formdocs.nacionalidade class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formdocs.data_nascimento.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formdocs.data_nascimento.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formdocs.data_nascimento class="form-control" type="date" %}
                     </div>
                   </div>
 
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
                   </div>
                 </form><!-- End settings Form -->
 
               </div>
 
-              <div class="tab-pane fade pt-3" id="profile-change-password">
+              <div class="tab-pane fade pt-3" id="editar-enderecos">
                 <!-- Change Password Form -->
-                <form>
+                <form method="post">
+                  {% csrf_token %}
 
                   <div class="row mb-3">
-                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control" id="currentPassword">
+                    <label for="{{ formsenderecos.cep.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsenderecos.cep.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsenderecos.cep class="form-control" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="newpassword" type="password" class="form-control" id="newPassword">
+                    <label for="{{ formsenderecos.uf.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsenderecos.uf.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsenderecos.uf class="form-control" %}
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                    <label for="{{ formsenderecos.cidade.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsenderecos.cidade.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsenderecos.cidade class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formsenderecos.endereco.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsenderecos.endereco.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsenderecos.endereco class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formsenderecos.bairro.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsenderecos.bairro.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsenderecos.bairro class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ numero.bairro.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ numero.bairro.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field numero.bairro class="form-control" %}
                     </div>
                   </div>
 
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
                   </div>
-                </form><!-- End Change Password Form -->
+                </form>
 
               </div>
 
-            </div><!-- End Bordered Tabs -->
+              <div class="tab-pane fade pt-3" id="editar-redes-sociais">
 
+
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="row mb-3">
+                    <label for="{{ formsredes.perfil_instagram.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsredes.perfil_instagram.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsredes.perfil_instagram class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formsredes.perfil_twitterx.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsredes.perfil_twitterx.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsredes.perfil_twitterx class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formsredes.perfil_facebook.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsredes.perfil_facebook.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsredes.perfil_facebook class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="{{ formsredes.perfil_linkedin.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ formsredes.perfil_linkedin.label }}</label>
+                    <div class="col-md-8 col-lg-9">                      
+                      {% render_field formsredes.perfil_linkedin class="form-control" %}
+                    </div>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                  </div>
+                </form>
+
+              </div>
+
+
+            </div>
           </div>
         </div>
 
